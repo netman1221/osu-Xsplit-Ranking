@@ -26,52 +26,52 @@ var d1 = "pp (#";
 var d2 = ")<\/b>";
 var s = "https://osu.ppy.sh/pages/include/profile-general.php?u=";
 if (mode == "osu") {
-  m = "0"
+    m = "0"
 }
 if (mode == "taiko") {
-  m = "1"
+    m = "1"
 };
 if (mode == "ctb") {
-  m = "2"
+    m = "2"
 }
 if (mode == "mania") {
-  m = "3"
+    m = "3"
 }
 
 function GetTextFromRemote() {
-  $.ajax({
-    url: s + id + "&m=" + m,
-    type: "GET",
-    dataType: "text",
-    complete: function() {
-      if (upd > 0) smlTitleTimeouts = setTimeout(function() {
-        GetTextFromRemote()
-      }, upd * 1000)
-    },
-    success: function(a) {
-      var b;
-      b = a;
-      if (d1 != "" && d2 != "") {
-        var c = b.length;
-        var d = b.indexOf(d1) > -1 ? (b.indexOf(d1) + d1.length) : 0;
-        var e = b.substring(d);
-        var f = e.length;
-        var g = e.indexOf(d2) > -1 ? e.indexOf(d2) : c;
-        var h = c;
-        if (g != c) {
-          h = g + (c - f)
+    $.ajax({
+        url: s + id + "&m=" + m,
+        type: "GET",
+        dataType: "text",
+        complete: function() {
+            if (upd > 0) smlTitleTimeouts = setTimeout(function() {
+                GetTextFromRemote()
+            }, upd * 1000)
+        },
+        success: function(a) {
+            var b;
+            b = a;
+            if (d1 != "" && d2 != "") {
+                var c = b.length;
+                var d = b.indexOf(d1) > -1 ? (b.indexOf(d1) + d1.length) : 0;
+                var e = b.substring(d);
+                var f = e.length;
+                var g = e.indexOf(d2) > -1 ? e.indexOf(d2) : c;
+                var h = c;
+                if (g != c) {
+                    h = g + (c - f)
+                }
+                if (h <= d) h = b.length - 1;
+                b = b.substring(d, h)
+            }
+            if (oldResponse != b) {
+                SetText("#" + b, id + "'s osu! ranking")
+            }
+            oldResponse = b
         }
-        if (h <= d) h = b.length - 1;
-        b = b.substring(d, h)
-      }
-      if (oldResponse != b) {
-        SetText("#" + b, id + "'s osu! ranking")
-      }
-      oldResponse = b
-    }
-  })
+    })
 }
 if (smlTitleTimeouts && smlTitleTimeouts != null) {
-  clearTimeout(smlTitleTimeouts)
+    clearTimeout(smlTitleTimeouts)
 }
 GetTextFromRemote();
